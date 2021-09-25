@@ -1,4 +1,4 @@
-# punk-bear
+# punk-beer
 
 ## Project setup
 ```
