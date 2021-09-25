@@ -2,7 +2,7 @@
   <div class="catalog">
     <h2 class="catalog__title">Catalog</h2>
     <catalog-filter
-      @filter="checkParams"
+      @filter="filter"
     />
     <base-loader v-if="loading" />
     <catalog-table
@@ -50,13 +50,19 @@ export default {
   },
   watch: {
     async page() {
-      this.beer = await this.getBeer();
+      this.beer = await this.getBeer(this.queryParams);
     },
   },
   methods: {
-    checkParams(params = {}) {
+    async filter(params = {}) {
       if (this.isEqual(params, this.queryParams)) return;
-      this.setQueryParams(params);
+      await this.setQueryParams(params);
+
+      if (this.page > 1) {
+        this.page = 1;
+      } else {
+        this.beer = await this.getBeer(this.queryParams);
+      }
     },
     async setQueryParams(params = {}) {
       if (!Object.keys(params).length) {
@@ -64,7 +70,6 @@ export default {
       } else {
         await this.$router.push({ name: 'Catalog', query: { ...params } });
       }
-      this.beer = await this.getBeer(this.queryParams);
     },
     async getBeer(params = {}) {
       this.loading = true;
