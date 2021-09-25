@@ -17,12 +17,6 @@
 <script>
 export default {
   name: 'ErrorPage',
-  computed: {
-    message() {
-      console.log(this.$route);
-      return '';
-    },
-  },
 };
 </script>
 
